@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portafolio de Proyectos</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f7f7f5;
+    --bg-tertiary: #eeede8;
+    --bg-info: #eef6ff;
+    --text-primary: #1a1a18;
+    --text-secondary: #5a5a57;
+    --text-tertiary: #9a9a96;
+    --border-light: rgba(0,0,0,0.10);
+    --border-mid: rgba(0,0,0,0.18);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2rem 1.5rem;
+  }
+
+  .page-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 4px;
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Stats cards */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+  .stat-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    border: 0.5px solid var(--border-light);
+  }
+  .stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+  .stat-icon {
+    font-size: 14px;
+    line-height: 1;
+  }
+  .stat-value {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .search-wrap {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--text-tertiary);
+  }
+  input[type="text"], input[type="number"], input[type="date"], select, textarea {
+    font-family: var(--font);
+    font-size: 12px;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border-mid);
+    border-radius: var(--radius-md);
+    padding: 7px 10px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus, select:focus, textarea:focus {
+    border-color: #378ADD;
+    box-shadow: 0 0 0 2px rgba(55,138,221,0.15);
+  }
+  .search-wrap input[type="text"] {
+    width: 100%;
+    padding-left: 32px;
+    font-size: 13px;
+  }
+  .filter-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-tertiary);
+    font-size: 12px;
+  }
+  button {
+    font-family: var(--font);
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    border: 0.5px solid var(--border-mid);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 12px;
+    padding: 7px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.12s;
+  }
+  button:hover { background: var(--bg-secondary); }
+  button:active { transform: scale(0.98); }
+
+  /* Add form */
+  .add-form {
+    background: var(--bg-secondary);
+    border: 0.5px solid var(--border-mid);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    display: none;
+  }
+  .add-form.visible { display: block; }
+  .add-form-title { font-size: 13px; font-weight: 500; margin-bottom: 10px; }
+  .add-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .add-form-grid input, .add-form-grid select {
+    width: 100%;
+  }
+  .add-form-actions { display: flex; gap: 8px; }
+
+  /* Table */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    border: 0.5px solid var(--border-light);
+    background: var(--bg-primary);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    table-layout: fixed;
+  }
+  thead tr {
+    background: var(--bg-secondary);
+    border-bottom: 0.5px solid var(--border-mid);
+  }
+  th {
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  th:hover { color: var(--text-primary); }
+  td {
+    padding: 10px 12px;
+    border-bottom: 0.5px solid var(--border-light);
+    vertical-align: middle;
+    line-height: 1.4;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--bg-info); }
+  tbody tr.editing td { background: #fffef5; }
+
+  .td-proyecto { font-weight: 500; }
+  .td-empresa, .td-pasos { color: var(--text-secondary); }
+  .td-fecha { color: var(--text-tertiary); white-space: nowrap; }
+  .td-empty { color: var(--text-tertiary); }
+
+  /* Badge */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .badge-progreso  { background: #E6F1FB; color: #185FA5; }
+  .badge-revision  { background: #FAEEDA; color: #854F0B; }
+  .badge-pausado   { background: #F1EFE8; color: #5F5E5A; }
+  .badge-completado{ background: #EAF3DE; color: #3B6D11; }
+
+  /* Progress bar */
+  .progress-wrap { display: flex; align-items: center; gap: 8px; }
+  .progress-track {
+    flex: 1;
+    height: 6px;
+    background: var(--bg-tertiary);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+  .progress-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); min-width: 30px; text-align: right; }
+
+  /* Alert icon for puntos */
+  .puntos-wrap { display: flex; gap: 5px; align-items: flex-start; }
+  .puntos-icon { flex-shrink: 0; margin-top: 2px; color: #854F0B; font-size: 13px; }
+  .puntos-text { color: var(--text-secondary); }
+
+  /* Action buttons */
+  .btn-edit   { background: #E6F1FB; color: #185FA5; border-color: #B5D4F4; padding: 4px 7px; font-size: 11px; }
+  .btn-delete { background: #FCEBEB; color: #A32D2D; border-color: #F7C1C1; padding: 4px 7px; font-size: 11px; }
+  .btn-save   { background: #EAF3DE; color: #3B6D11; border-color: #C0DD97; padding: 4px 7px; font-size: 11px; }
+  .btn-cancel { background: var(--bg-secondary); color: var(--text-secondary); border-color: var(--border-light); padding: 4px 7px; font-size: 11px; }
+  .actions-wrap { display: flex; gap: 6px; }
+
+  .td-editing input[type="text"], .td-editing input[type="number"], .td-editing input[type="date"], .td-editing select {
+    width: 100%;
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+  .td-editing textarea {
+    width: 100%;
+    font-size: 11px;
+    padding: 4px 6px;
+    resize: vertical;
+    min-height: 52px;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer span { font-size: 11px; color: var(--text-tertiary); }
+
+  .sort-icon { opacity: 0.35; font-size: 10px; }
+  .sort-active { opacity: 1; font-size: 10px; }
+
+  .empty-row td { padding: 2rem; text-align: center; color: var(--text-tertiary); font-size: 13px; }
+
+  @media (max-width: 700px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .add-form-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<p class="page-label">Gestión de proyectos</p>
+<h1>Portafolio de proyectos</h1>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-header"><span class="stat-label">Proyectos totales</span><span class="stat-icon" style="color:#185FA5">&#128196;</span></div>
+    <div class="stat-value" id="stat-total">0</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-header"><span class="stat-label">En progreso</span><span class="stat-icon" style="color:#854F0B">&#8679;</span></div>
+    <div class="stat-value" id="stat-progreso">0</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-header"><span class="stat-label">Completados</span><span class="stat-icon" style="color:#3B6D11">&#10003;</span></div>
+    <div class="stat-value" id="stat-completados">0</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-header"><span class="stat-label">Avance promedio</span><span class="stat-icon" style="color:#533B2F">&#128100;</span></div>
+    <div class="stat-value" id="stat-avance">0%</div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="search-input" placeholder="Buscar proyectos..."/>
+  </div>
+  <div class="filter-wrap">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+    <select id="filter-estado">
+      <option value="Todos">Todos</option>
+      <option value="En progreso">En progreso</option>
+      <option value="En revisión">En revisión</option>
+      <option value="Pausado">Pausado</option>
+      <option value="Completado">Completado</option>
+    </select>
+  </div>
+  <button onclick="toggleAddForm()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Nuevo proyecto
+  </button>
+</div>
+
+<div class="add-form" id="add-form">
+  <p class="add-form-title">Agregar nuevo proyecto</p>
+  <div class="add-form-grid">
+    <input type="text" id="new-proyecto" placeholder="Nombre del proyecto"/>
+    <input type="text" id="new-empresa" placeholder="Empresa"/>
+    <input type="text" id="new-responsable" placeholder="Responsable"/>
+    <input type="text" id="new-puntos" placeholder="Puntos de atención"/>
+    <input type="text" id="new-pasos" placeholder="Próximos pasos"/>
+    <select id="new-estado">
+      <option>En progreso</option>
+      <option>En revisión</option>
+      <option>Pausado</option>
+      <option>Completado</option>
+    </select>
+    <div style="display:flex;align-items:center;gap:8px">
+      <label style="font-size:11px;color:var(--text-secondary);white-space:nowrap">% Avance</label>
+      <input type="number" id="new-porcentaje" min="0" max="100" value="0" style="width:70px"/>
+    </div>
+    <input type="date" id="new-fecha"/>
+  </div>
+  <div class="add-form-actions">
+    <button class="btn-save" onclick="addProject()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      Guardar
+    </button>
+    <button class="btn-cancel" onclick="toggleAddForm()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      Cancelar
+    </button>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th style="width:18%" onclick="sortBy('proyecto')">Proyecto <span id="sort-proyecto" class="sort-icon">&#8597;</span></th>
+        <th style="width:13%" onclick="sortBy('empresa')">Empresa <span id="sort-empresa" class="sort-icon">&#8597;</span></th>
+        <th style="width:12%" onclick="sortBy('responsable')">Responsable <span id="sort-responsable" class="sort-icon">&#8597;</span></th>
+        <th style="width:10%" onclick="sortBy('estado')">Estado <span id="sort-estado" class="sort-icon">&#8597;</span></th>
+        <th style="width:18%">Puntos de atención</th>
+        <th style="width:9%" onclick="sortBy('porcentaje')">% Avance <span id="sort-porcentaje" class="sort-icon">&#8597;</span></th>
+        <th style="width:14%">Próximos pasos</th>
+        <th style="width:10%" onclick="sortBy('fechaActualizacion')">Actualización <span id="sort-fechaActualizacion" class="sort-icon">&#8597;</span></th>
+        <th style="width:72px">Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+</div>
+
+<div class="footer">
+  <span id="footer-count">0 de 0 proyectos</span>
+  <span id="footer-date"></span>
+</div>
+
+<script>
+let projects = [
+  { id: 1, proyecto: "IA", empresa: "PPM", responsable: "Esteban Morejon", estado: "En progreso", puntosAtencion: "", avance: "KO realizado esta semana", porcentaje: 25, proximosPasos: "", fechaActualizacion: "2025-05-04" },
+  { id: 2, proyecto: "Iniciativas MLD", empresa: "MLD", responsable: "David Ortiz", estado: "En progreso", puntosAtencion: "", avance: "", porcentaje: 20, proximosPasos: "", fechaActualizacion: "2025-05-04" }
+];
+
+let editingId = null;
+let editBuffer = {};
+let sortKey = null;
+let sortDir = "asc";
+let searchVal = "";
+let filterEstado = "Todos";
+let nextId = 100;
+
+const BADGE = {
+  "En progreso":  "badge-progreso",
+  "En revisión":  "badge-revision",
+  "Pausado":      "badge-pausado",
+  "Completado":   "badge-completado"
+};
+const BADGE_ICON = {
+  "En progreso":  "&#8679;",
+  "En revisión":  "&#9200;",
+  "Pausado":      "&#9646;",
+  "Completado":   "&#10003;"
+};
+const PROGRESS_COLOR = p => p === 100 ? "#3B6D11" : p >= 70 ? "#185FA5" : p >= 40 ? "#854F0B" : "#A32D2D";
+
+function getFiltered() {
+  let arr = [...projects];
+  if (searchVal) arr = arr.filter(p => Object.values(p).join(" ").toLowerCase().includes(searchVal.toLowerCase()));
+  if (filterEstado !== "Todos") arr = arr.filter(p => p.estado === filterEstado);
+  if (sortKey) arr.sort((a, b) => {
+    const va = a[sortKey], vb = b[sortKey];
+    return sortDir === "asc" ? (va > vb ? 1 : -1) : (va < vb ? 1 : -1);
+  });
+  return arr;
+}
+
+function escHtml(str) {
+  return String(str || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function renderTable() {
+  const filtered = getFiltered();
+  const tbody = document.getElementById("table-body");
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="9">No se encontraron proyectos</td></tr>`;
+    updateStats();
+    updateFooter(filtered.length);
+    return;
+  }
+  tbody.innerHTML = filtered.map((p, i) => {
+    const isEdit = editingId === p.id;
+    const buf = isEdit ? editBuffer : p;
+    const rowBg = isEdit ? "" : (i % 2 === 0 ? "var(--bg-primary)" : "var(--bg-secondary)");
+    const cls = isEdit ? "editing" : "";
+
+    const badgeCls = BADGE[p.estado] || "badge-progreso";
+    const badgeIcon = BADGE_ICON[p.estado] || "";
+
+    const pct = Number(buf.porcentaje) || 0;
+    const pctColor = PROGRESS_COLOR(pct);
+
+    return `<tr class="${cls}" style="background:${rowBg};border-bottom:0.5px solid var(--border-light)"
+      ${!isEdit ? `onmouseenter="this.style.background='var(--bg-info)'" onmouseleave="this.style.background='${rowBg}'"` : ""}>
+      <td class="td-proyecto ${isEdit ? 'td-editing' : ''}">
+        ${isEdit ? `<input type="text" value="${escHtml(buf.proyecto)}" oninput="editBuffer.proyecto=this.value"/>` : escHtml(p.proyecto)}
+      </td>
+      <td class="td-empresa ${isEdit ? 'td-editing' : ''}">
+        ${isEdit ? `<input type="text" value="${escHtml(buf.empresa)}" oninput="editBuffer.empresa=this.value"/>` : escHtml(p.empresa)}
+      </td>
+      <td class="${isEdit ? 'td-editing' : ''}">
+        ${isEdit ? `<input type="text" value="${escHtml(buf.responsable)}" oninput="editBuffer.responsable=this.value"/>` : escHtml(p.responsable)}
+      </td>
+      <td class="${isEdit ? 'td-editing' : ''}">
+        ${isEdit
+          ? `<select onchange="editBuffer.estado=this.value">
+              ${["En progreso","En revisión","Pausado","Completado"].map(s => `<option${s===buf.estado?" selected":""}>${s}</option>`).join("")}
+            </select>`
+          : `<span class="badge ${badgeCls}">${badgeIcon} ${escHtml(p.estado)}</span>`}
+      </td>
+      <td class="${isEdit ? 'td-editing' : ''}">
+        ${isEdit
+          ? `<textarea oninput="editBuffer.puntosAtencion=this.value">${escHtml(buf.puntosAtencion)}</textarea>`
+          : (p.puntosAtencion
+              ? `<div class="puntos-wrap"><span class="puntos-icon">&#9888;</span><span class="puntos-text">${escHtml(p.puntosAtencion)}</span></div>`
+              : `<span class="td-empty">—</span>`)}
+      </td>
+      <td class="${isEdit ? 'td-editing' : ''}">
+        ${isEdit
+          ? `<input type="number" min="0" max="100" value="${pct}" style="width:60px" oninput="editBuffer.porcentaje=Number(this.value);renderTable()"/>`
+          : `<div class="progress-wrap">
+               <div class="progress-track"><div class="progress-fill" style="width:${pct}%;background:${pctColor}"></div></div>
+               <span class="progress-label">${pct}%</span>
+             </div>`}
+      </td>
+      <td class="td-pasos ${isEdit ? 'td-editing' : ''}">
+        ${isEdit
+          ? `<textarea oninput="editBuffer.proximosPasos=this.value">${escHtml(buf.proximosPasos)}</textarea>`
+          : escHtml(p.proximosPasos)}
+      </td>
+      <td class="td-fecha ${isEdit ? 'td-editing' : ''}">
+        ${isEdit
+          ? `<input type="date" value="${escHtml(buf.fechaActualizacion)}" oninput="editBuffer.fechaActualizacion=this.value"/>`
+          : escHtml(p.fechaActualizacion)}
+      </td>
+      <td>
+        <div class="actions-wrap">
+          ${isEdit
+            ? `<button class="btn-save" onclick="saveEdit()" title="Guardar">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+               </button>
+               <button class="btn-cancel" onclick="cancelEdit()" title="Cancelar">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+               </button>`
+            : `<button class="btn-edit" onclick="startEdit(${p.id})" title="Editar">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+               </button>
+               <button class="btn-delete" onclick="deleteProject(${p.id})" title="Eliminar">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+               </button>`}
+        </div>
+      </td>
+    </tr>`;
+  }).join("");
+  updateStats();
+  updateFooter(filtered.length);
+}
+
+function updateStats() {
+  document.getElementById("stat-total").textContent = projects.length;
+  document.getElementById("stat-progreso").textContent = projects.filter(p => p.estado === "En progreso").length;
+  document.getElementById("stat-completados").textContent = projects.filter(p => p.estado === "Completado").length;
+  const avg = projects.length ? Math.round(projects.reduce((a, p) => a + p.porcentaje, 0) / projects.length) : 0;
+  document.getElementById("stat-avance").textContent = avg + "%";
+}
+
+function updateFooter(filteredCount) {
+  document.getElementById("footer-count").textContent = `${filteredCount} de ${projects.length} proyectos`;
+  document.getElementById("footer-date").textContent = "Última sincronización: " + new Date().toLocaleDateString("es-ES");
+}
+
+function startEdit(id) {
+  const p = projects.find(x => x.id === id);
+  editingId = id;
+  editBuffer = { ...p };
+  renderTable();
+}
+
+function saveEdit() {
+  projects = projects.map(p => p.id === editingId ? { ...editBuffer, id: editingId } : p);
+  editingId = null;
+  renderTable();
+}
+
+function cancelEdit() {
+  editingId = null;
+  renderTable();
+}
+
+function deleteProject(id) {
+  if (confirm("¿Eliminar este proyecto?")) {
+    projects = projects.filter(p => p.id !== id);
+    renderTable();
+  }
+}
+
+function sortBy(key) {
+  const icons = ["proyecto","empresa","responsable","estado","porcentaje","fechaActualizacion"];
+  icons.forEach(k => {
+    const el = document.getElementById("sort-" + k);
+    if (el) { el.textContent = "⇅"; el.className = "sort-icon"; }
+  });
+  if (sortKey === key) sortDir = sortDir === "asc" ? "desc" : "asc";
+  else { sortKey = key; sortDir = "asc"; }
+  const el = document.getElementById("sort-" + key);
+  if (el) { el.textContent = sortDir === "asc" ? "↑" : "↓"; el.className = "sort-active"; }
+  renderTable();
+}
+
+function toggleAddForm() {
+  const form = document.getElementById("add-form");
+  form.classList.toggle("visible");
+  if (form.classList.contains("visible")) {
+    document.getElementById("new-fecha").value = new Date().toISOString().split("T")[0];
+  }
+}
+
+function addProject() {
+  const p = {
+    id: nextId++,
+    proyecto: document.getElementById("new-proyecto").value,
+    empresa: document.getElementById("new-empresa").value,
+    responsable: document.getElementById("new-responsable").value,
+    estado: document.getElementById("new-estado").value,
+    puntosAtencion: document.getElementById("new-puntos").value,
+    avance: "",
+    porcentaje: Number(document.getElementById("new-porcentaje").value) || 0,
+    proximosPasos: document.getElementById("new-pasos").value,
+    fechaActualizacion: document.getElementById("new-fecha").value || new Date().toISOString().split("T")[0]
+  };
+  projects.push(p);
+  ["new-proyecto","new-empresa","new-responsable","new-puntos","new-pasos"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("new-porcentaje").value = 0;
+  document.getElementById("add-form").classList.remove("visible");
+  renderTable();
+}
+
+document.getElementById("search-input").addEventListener("input", e => {
+  searchVal = e.target.value;
+  renderTable();
+});
+document.getElementById("filter-estado").addEventListener("change", e => {
+  filterEstado = e.target.value;
+  renderTable();
+});
+
+renderTable();
+</script>
+</body>
+</html>
