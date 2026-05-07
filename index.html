@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portafolio QPH · DCE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #F2F4F8;
+      --surface:   #FFFFFF;
+      --navy:      #0D1F3C;
+      --blue:      #1E88E5;
+      --blue-lt:   #E3F2FD;
+      --green:     #2E7D32;
+      --green-dot: #43A047;
+      --green-lt:  #E8F5E9;
+      --orange:    #E65100;
+      --orange-lt: #FFF3E0;
+      --orange-dot:#FB8C00;
+      --purple:    #6A1B9A;
+      --purple-lt: #F3E5F5;
+      --purple-dot:#9C27B0;
+      --text:      #0D1F3C;
+      --muted:     #64748B;
+      --faint:     #94A3B8;
+      --border:    #E8ECF0;
+      --radius:    12px;
+      --shadow:    0 1px 4px rgba(13,31,60,.07), 0 4px 16px rgba(13,31,60,.05);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 28px 24px 60px;
+    }
+
+    /* ── Header ─────────────────────────────────────── */
+    .header { margin-bottom: 24px; animation: fadeUp .5s ease both; }
+    .header-eyebrow {
+      font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+      color: var(--blue); text-transform: uppercase; margin-bottom: 6px;
+    }
+    .header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 900; color: var(--navy); letter-spacing: -.5px; line-height: 1;
+    }
+    .header-sync {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 8px; font-size: 11px;
+    }
+    .sync-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green-dot);
+      box-shadow: 0 0 0 3px rgba(67,160,71,.2);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 3px rgba(67,160,71,.2); }
+      50%      { box-shadow: 0 0 0 6px rgba(67,160,71,.05); }
+    }
+
+    /* ── Banner ──────────────────────────────────────── */
+    .banner {
+      background: #EEF6FF; border: 1px solid #BFDBFE;
+      border-radius: var(--radius); padding: 11px 16px;
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 22px; font-size: 12px; color: #1565C0; line-height: 1.6;
+      animation: fadeUp .5s .1s ease both;
+    }
+    .banner-icon { font-size: 18px; flex-shrink: 0; }
+
+    /* ── KPIs ────────────────────────────────────────── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px; margin-bottom: 22px;
+      animation: fadeUp .5s .15s ease both;
+    }
+    @media (max-width: 700px) { .kpi-grid { grid-template-columns: repeat(2,1fr); } }
+    .kpi {
+      background: var(--surface); border-radius: var(--radius);
+      padding: 16px 18px; box-shadow: var(--shadow);
+      display: flex; align-items: center; gap: 14px;
+      border-top: 3px solid var(--kpi-accent, var(--navy));
+      transition: transform .2s, box-shadow .2s;
+    }
+    .kpi:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(13,31,60,.1); }
+    .kpi-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: var(--kpi-light, #E8EDF5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 19px; flex-shrink: 0;
+    }
+    .kpi-val {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px; font-weight: 900;
+      color: var(--kpi-accent, var(--navy)); line-height: 1;
+    }
+    .kpi-lbl { font-size: 10px; color: var(--faint); font-weight: 600; letter-spacing: .3px; margin-top: 3px; }
+
+    /* ── Filters ─────────────────────────────────────── */
+    .filters {
+      display: flex; gap: 7px; flex-wrap: wrap;
+      margin-bottom: 16px;
+      animation: fadeUp .5s .2s ease both;
+    }
+    .filter-btn {
+      padding: 5px 13px; border-radius: 20px; border: 1.5px solid var(--border);
+      font-size: 11px; font-weight: 600; cursor: pointer;
+      background: var(--surface); color: var(--muted);
+      transition: all .15s; font-family: 'DM Sans', sans-serif;
+    }
+    .filter-btn:hover { border-color: #aaa; color: var(--text); }
+    .filter-btn.active { border-color: var(--f-dot); background: var(--f-bg); color: var(--f-color); }
+    .filter-btn.clear-btn { color: #aaa; }
+
+    /* ── Search ──────────────────────────────────────── */
+    .search-wrap {
+      position: relative; margin-bottom: 16px;
+      animation: fadeUp .5s .25s ease both;
+    }
+    .search-icon {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      font-size: 14px; color: var(--faint); pointer-events: none;
+    }
+    .search-input {
+      width: 100%; padding: 10px 14px 10px 36px;
+      border-radius: 10px; border: 1.5px solid var(--border);
+      font-size: 12px; background: var(--surface);
+      outline: none; font-family: 'DM Sans', sans-serif;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(30,136,229,.1); }
+
+    /* ── Table ───────────────────────────────────────── */
+    .table-wrap {
+      background: var(--surface); border-radius: 14px;
+      box-shadow: var(--shadow); overflow: hidden;
+      animation: fadeUp .5s .3s ease both;
+    }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 11px; }
+    thead tr { background: #F8F9FB; }
+    th {
+      padding: 11px 14px; text-align: left;
+      font-weight: 800; font-size: 9px; color: var(--faint);
+      text-transform: uppercase; letter-spacing: .9px;
+      white-space: nowrap; border-bottom: 1.5px solid var(--border);
+    }
+    tbody tr {
+      border-bottom: 1px solid #F4F6F8;
+      transition: background .15s;
+      cursor: default;
+    }
+    tbody tr:nth-child(even) { background: #FAFBFC; }
+    tbody tr:hover { background: #EFF5FF !important; }
+    td { padding: 12px 14px; vertical-align: middle; }
+
+    .proj-name { font-weight: 700; color: var(--navy); font-size: 12px; }
+    .proj-desc {
+      color: var(--faint); font-size: 10px; margin-top: 2px;
+      max-width: 155px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+
+    /* ── Badge ───────────────────────────────────────── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 20px;
+      font-size: 10px; font-weight: 700; white-space: nowrap;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ── Progress ────────────────────────────────────── */
+    .progress-wrap { display: flex; align-items: center; gap: 8px; min-width: 110px; }
+    .progress-track {
+      flex: 1; height: 6px; border-radius: 99px;
+      background: #EBEBEB; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 99px;
+      transition: width .6s cubic-bezier(.4,0,.2,1);
+    }
+    .progress-pct { font-size: 11px; font-weight: 700; min-width: 30px; text-align: right; }
+
+    /* ── Tooltip ─────────────────────────────────────── */
+    .tooltip-cell { position: relative; max-width: 175px; }
+    .tooltip-trigger {
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      font-size: 11px; color: var(--muted); cursor: default;
+    }
+    .tooltip-trigger.empty { color: var(--faint); }
+    .tooltip-box {
+      display: none;
+      position: absolute; top: calc(100% + 6px); left: 0; z-index: 400;
+      background: var(--navy); color: #fff;
+      border-radius: 10px; padding: 12px 14px;
+      font-size: 11px; line-height: 1.75;
+      min-width: 230px; max-width: 340px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      pointer-events: none;
+    }
+    .tooltip-cell:hover .tooltip-box { display: block; }
+
+    /* ── Table footer ────────────────────────────────── */
+    .table-footer {
+      padding: 9px 16px; font-size: 10px; color: var(--faint);
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .notion-tag {
+      display: flex; align-items: center; gap: 5px;
+      color: var(--green-dot); font-weight: 600;
+    }
+    .notion-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green-dot);
+    }
+
+    .empty-row td {
+      text-align: center; padding: 48px;
+      color: var(--faint); font-size: 13px;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-eyebrow">Comité QPH · DCE</div>
+  <h1>Portafolio de Proyectos</h1>
+  <div class="header-sync">
+    <span class="sync-dot"></span>
+    <span style="color:var(--green-dot);font-weight:600;">Sincronizado con Notion</span>
+    <span style="color:var(--faint);">· 07 mayo 2026</span>
+  </div>
+</div>
+
+<!-- Banner -->
+<div class="banner">
+  <span class="banner-icon">💬</span>
+  <div><strong>¿Quieres actualizar o agregar un proyecto?</strong> Escríbelo en el chat — Claude actualizará Notion y regenerará este tablero automáticamente.</div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-grid" id="kpis"></div>
+
+<!-- Filters -->
+<div class="filters" id="filters"></div>
+
+<!-- Search -->
+<div class="search-wrap">
+  <span class="search-icon">🔍</span>
+  <input class="search-input" id="search" type="text" placeholder="Buscar por proyecto, empresa, responsable o estado…" />
+</div>
+
+<!-- Table -->
+<div class="table-wrap">
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Proyecto</th>
+          <th>Empresa</th>
+          <th>Responsable</th>
+          <th>Estado</th>
+          <th>Puntos de atención</th>
+          <th>% Avance</th>
+          <th>Próximos pasos</th>
+          <th>Actualización</th>
+          <th>Últ. actualización</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <div class="table-footer">
+    <span id="footer-count"></span>
+    <span class="notion-tag"><span class="notion-dot"></span> Notion · Solo lectura</span>
+  </div>
+</div>
+
+<script>
+// ── Datos — Notion · 07 mayo 2026 ────────────────────────────────────────────
+const PROJECTS = [
+  {
+    id: 1,
+    nombre: "Defensivo GXC",
+    descripcion: "Digitalización end-to-end del proceso de venta de tarjetas",
+    empresa: "DCE",
+    responsable: "Pablo (sponsor) / Equipo GXC / Francisco (datos)",
+    estado: "En Curso",
+    puntos: "• Reducir tiempo de acreditación de ODV\n• PPM Inventario de ODV\n• Posible duplicidad con Scoring — alinear gobernanza DCE y Centro",
+    avance: 35,
+    proximos: "• Cerrar definición de equipo — próx. 2 sem.\n• Cerrar Fase 1 (prospección→activación) — Q3 2026\n• Revisión con RD impacto en PYG GXC — pendiente fecha",
+    actualizacion: "Back office del front digitalizado parcialmente. Diagnóstico operativo cerrado — abr 2026.",
+    ultimaAct: "07 mayo 2026",
+  },
+  {
+    id: 2,
+    nombre: "App Clubes",
+    descripcion: "Defensa y oferta para 6 Clubes con pagos integrados",
+    empresa: "DCE — 6 Clubes",
+    responsable: "Pablo (sponsor) / Paula / Ana María Cabrera",
+    estado: "Aprobado",
+    puntos: "• Cuantificar socios Diners por Club\n• Diseñar barreras de salida y oferta diferenciada\n• Presidente de Club con tarjeta de competidor por USD 80,000",
+    avance: 20,
+    proximos: "• Conteo de socios por Club — antes 4 may 2026\n• Lanzar piloto defensivo a 2,000 no-socios — próx. 4-6 sem.\n• Definir modelo de pagos integrados — Q2 2026",
+    actualizacion: "Piloto aprobado por Pablo — 27 abr 2026. Lideresas asignadas: Paula + Ana María Cabrera.",
+    ultimaAct: "07 mayo 2026",
+  },
+  {
+    id: 3,
+    nombre: "Salas VIP",
+    descripcion: "Diseño arquitectónico + Proyecto Leo (host) + Acceso + Robot",
+    empresa: "DCE — Sala VIP",
+    responsable: "Equipo Sala VIP / Rubén (informe experiencia)",
+    estado: "En Curso",
+    puntos: "• Mejorar experiencia y acceso al beneficio\n• Coordinación con Aduana para llegada del robot\n• Tomar y mejorar informe de experiencia de socios viajeros",
+    avance: 60,
+    proximos: "• Recepción y operación del robot — ≈ 27 may 2026\n• Homologación del Acceso como servicio — por definir\n• Revisión del informe de Rubén — mayo 2026",
+    actualizacion: "Robot adquirido y en tránsito — abr 2026. Sistema de pre-lectores QR en evaluación. Proyecto Leo iniciado.",
+    ultimaAct: "07 mayo 2026",
+  },
+  {
+    id: 4,
+    nombre: "Oferta de Valor",
+    descripcion: "Motor Benefits + Blu 2.0 / MultiRewards + Experiencia de Banca",
+    empresa: "DCE",
+    responsable: "Pablo (sponsor) / Paco (PlusMites/PN) / Ariana (contrato/pricing)",
+    estado: "En Riesgo",
+    puntos: "• Validar cifra de inversión: USD 2,000M vs USD 2M (impacto C-level)\n• Motor pendiente de aprobación\n• Marketing reasignó recursos\n• Definir Business Owner único",
+    avance: 25,
+    proximos: "• Mini-mapa de las 3 cajas (Benefits/Blu/Loop) — 4 may 2026\n• Validar inversión y modelo pricing con Ariana — próx. 2 sem.\n• Aprobación del motor — Q2 2026",
+    actualizacion: "Restaurantes fuera de Blu 2.0 — 27 abr 2026. Tratado como proyecto consolidado. MultiRewards en construcción.",
+    ultimaAct: "07 mayo 2026",
+  },
+  {
+    id: 5,
+    nombre: "Concierge",
+    descripcion: "Atención + automatización back-office para comercios altovalor",
+    empresa: "DCE — Comercios altovalor",
+    responsable: "Julie Bertel / GXC",
+    estado: "Pendiente",
+    puntos: "• Implementación 18 mayo 2026\n• 90% de transacciones altovalor son anulaciones de vales\n• Necesita TEEP/IVR y replanteo del modelo comercial",
+    avance: 50,
+    proximos: "• Diseño de la capa de atención — próx. 2 sem.\n• Capacitación\n• Replanteo de roles comerciales — Q2 2026",
+    actualizacion: "Diagnóstico cuantitativo cerrado — abr 2026. Juan Fernando confirmado como owner. Julie Bertel autoriza precio con Ariana Solís — miérc. 6 may.",
+    ultimaAct: "07 mayo 2026",
+  },
+  {
+    id: 6,
+    nombre: "Co-creación",
+    descripcion: "Proceso de research que alimenta los demás proyectos",
+    empresa: "DCE — capacidad transversal",
+    responsable: "Fernando (lead)",
+    estado: "En Curso",
+    puntos: "• Definir si el equipo se monta CORPORATIVAMENTE o por proyecto\n• Articular Yudos / FIBK / salud de marca / NPS\n• Definir entregables tipo y cliente interno",
+    avance: 30,
+    proximos: "• Mini-ficha del proceso — Fernando — próx. 2 sem.\n• Decisión corporativo vs por proyecto — 4 may 2026\n• Plan de research por proyecto — mayo 2026",
+    actualizacion: "Capa actual de research operando: salud de marca + NPS. Piezas de User Research / Yudos identificadas.",
+    ultimaAct: "07 mayo 2026",
+  },
+  {
+    id: 7,
+    nombre: "Scoring",
+    descripcion: "Automatización del crédito (caso ancla: Promédica)",
+    empresa: "DCE — caso ancla Grupo Promédica",
+    responsable: "Santiago (priorizador) / Javier Melentes (piloto)",
+    estado: "Aprobado",
+    puntos: "• Capacidad de desarrollo existe; falta construir el producto\n• Definir si es producto interno Diners o para aliados\n• Integración con central de riesgos\n• Posible duplicidad con Defensivo GXC",
+    avance: 100,
+    proximos: "• Definir alcance (interno vs producto) — próx. 2 sem.\n• Caso piloto Promédica — propuesta para mayo 2026\n• Roadmap del motor de scoring — Q2 2026",
+    actualizacion: "Reunión disparadora con Promédica — semana del 20 abr 2026. Necesidad validada por Javier Melentes.",
+    ultimaAct: "07 mayo 2026",
+  },
+  {
+    id: 8,
+    nombre: "Integración SAP",
+    descripcion: "Generar una integración con SAP",
+    empresa: "DCE",
+    responsable: "David Ortiz",
+    estado: "En Curso",
+    puntos: "",
+    avance: 2,
+    proximos: "",
+    actualizacion: "",
+    ultimaAct: "07 mayo 2026",
+  },
+  {
+    id: 9,
+    nombre: "CO ACTION Innovación",
+    descripcion: "Revisión de capacidad operativa",
+    empresa: "MLD",
+    responsable: "Esteban Morejón",
+    estado: "En Curso",
+    puntos: "",
+    avance: 25,
+    proximos: "",
+    actualizacion: "",
+    ultimaAct: "07 mayo 2026",
+  },
+];
+
+const ESTADOS = {
+  "En Curso":   { bg:"#E8F5E9", color:"#2E7D32", dot:"#43A047" },
+  "Aprobado":   { bg:"#E3F2FD", color:"#1565C0", dot:"#1E88E5" },
+  "En Riesgo":  { bg:"#FFF3E0", color:"#E65100", dot:"#FB8C00" },
+  "Pendiente":  { bg:"#F3E5F5", color:"#6A1B9A", dot:"#9C27B0" },
+  "Completado": { bg:"#C8E6C9", color:"#1B5E20", dot:"#388E3C" },
+};
+
+// ── KPIs ──────────────────────────────────────────────────────────────────────
+function renderKPIs() {
+  const total = PROJECTS.length;
+  const enCurso = PROJECTS.filter(p => p.estado === "En Curso").length;
+  const completados = PROJECTS.filter(p => p.estado === "Completado" || p.avance === 100).length;
+  const avg = Math.round(PROJECTS.reduce((a, b) => a + (b.avance || 0), 0) / total);
+
+  const items = [
+    { label:"Proyectos totales", value: total,        icon:"📁", accent:"#0D1F3C", light:"#E8EDF5" },
+    { label:"En progreso",       value: enCurso,      icon:"⚡", accent:"#1E88E5", light:"#E3F2FD" },
+    { label:"Completados",       value: completados,  icon:"✅", accent:"#2E7D32", light:"#E8F5E9" },
+    { label:"Avance promedio",   value: avg + "%",    icon:"📈", accent:"#E65100", light:"#FFF3E0" },
+  ];
+
+  document.getElementById("kpis").innerHTML = items.map(k => `
+    <div class="kpi" style="--kpi-accent:${k.accent};--kpi-light:${k.light}">
+      <div class="kpi-icon">${k.icon}</div>
+      <div>
+        <div class="kpi-val">${k.value}</div>
+        <div class="kpi-lbl">${k.label}</div>
+      </div>
+    </div>
+  `).join("");
+}
+
+// ── Filters ───────────────────────────────────────────────────────────────────
+let activeFilter = "Todos";
+
+function renderFilters() {
+  const wrap = document.getElementById("filters");
+  let html = Object.entries(ESTADOS).map(([name, c]) => `
+    <button class="filter-btn ${activeFilter === name ? 'active' : ''}"
+      data-filter="${name}"
+      style="--f-dot:${c.dot};--f-bg:${c.bg};--f-color:${c.color}">
+      ${name}
+    </button>
+  `).join("");
+  if (activeFilter !== "Todos") {
+    html += `<button class="filter-btn clear-btn" data-filter="clear">✕ Todos</button>`;
+  }
+  wrap.innerHTML = html;
+
+  wrap.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const f = btn.dataset.filter;
+      activeFilter = (f === "clear" || f === activeFilter) ? "Todos" : f;
+      renderFilters();
+      renderTable();
+    });
+  });
+}
+
+// ── Progress bar ──────────────────────────────────────────────────────────────
+function progressBar(val) {
+  const v = Math.min(Math.max(val || 0, 0), 100);
+  const color = v >= 75 ? "#43A047" : v >= 40 ? "#FB8C00" : "#1E88E5";
+  return `
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-fill" style="width:${v}%;background:${color}"></div>
+      </div>
+      <span class="progress-pct" style="color:${color}">${v}%</span>
+    </div>`;
+}
+
+// ── Badge ─────────────────────────────────────────────────────────────────────
+function badge(estado) {
+  const c = ESTADOS[estado] || { bg:"#F5F5F5", color:"#555", dot:"#999" };
+  return `<span class="badge" style="background:${c.bg};color:${c.color}">
+    <span class="badge-dot" style="background:${c.dot}"></span>${estado}
+  </span>`;
+}
+
+// ── Tooltip cell ──────────────────────────────────────────────────────────────
+function tooltipCell(text) {
+  const lines = (text || "").split("\n").filter(Boolean);
+  const first = lines[0] || "—";
+  const tipLines = lines.map(l => `<div>${escHtml(l)}</div>`).join("");
+  return `
+    <div class="tooltip-cell">
+      <div class="tooltip-trigger ${lines.length === 0 ? 'empty' : ''}">${escHtml(first)}</div>
+      ${lines.length > 0 ? `<div class="tooltip-box">${tipLines}</div>` : ""}
+    </div>`;
+}
+
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+// ── Table ─────────────────────────────────────────────────────────────────────
+function renderTable() {
+  const q = (document.getElementById("search").value || "").toLowerCase();
+  const filtered = PROJECTS.filter(p => {
+    const mq = !q || [p.nombre, p.empresa, p.responsable, p.estado].some(f => (f||"").toLowerCase().includes(q));
+    const mf = activeFilter === "Todos" || p.estado === activeFilter;
+    return mq && mf;
+  });
+
+  const tbody = document.getElementById("tbody");
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="9">Sin resultados para tu búsqueda.</td></tr>`;
+  } else {
+    tbody.innerHTML = filtered.map(p => `
+      <tr>
+        <td style="min-width:145px">
+          <div class="proj-name">${escHtml(p.nombre)}</div>
+          ${p.descripcion ? `<div class="proj-desc">${escHtml(p.descripcion)}</div>` : ""}
+        </td>
+        <td style="color:var(--muted);min-width:110px">${escHtml(p.empresa||"—")}</td>
+        <td style="color:var(--muted);min-width:130px;line-height:1.5">${escHtml(p.responsable||"—")}</td>
+        <td style="min-width:95px">${badge(p.estado)}</td>
+        <td style="min-width:165px">${tooltipCell(p.puntos)}</td>
+        <td style="min-width:125px">${progressBar(p.avance)}</td>
+        <td style="min-width:165px">${tooltipCell(p.proximos)}</td>
+        <td style="min-width:165px">${tooltipCell(p.actualizacion)}</td>
+        <td style="min-width:100px;font-size:10px;color:var(--faint);white-space:nowrap">${escHtml(p.ultimaAct||"—")}</td>
+      </tr>`).join("");
+  }
+
+  document.getElementById("footer-count").textContent =
+    `Mostrando ${filtered.length} de ${PROJECTS.length} proyectos`;
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+renderKPIs();
+renderFilters();
+renderTable();
+document.getElementById("search").addEventListener("input", renderTable);
+</script>
+</body>
+</html>
